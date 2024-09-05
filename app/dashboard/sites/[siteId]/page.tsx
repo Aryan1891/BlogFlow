@@ -83,7 +83,7 @@ async function getData(userId: string, siteId: string) {
 export default async function SiteIdRoute({
   params,
 }: {
-  params: { siteId: string };
+  params: { siteId: string }; 
 }) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
