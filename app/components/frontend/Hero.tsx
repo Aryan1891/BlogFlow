@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/public/logo.svg";
+import Logo from "@/public/download.svg";
 import { ThemeToggle } from "../dashboard/ThemeToggle";
 import {
   LoginLink,
   RegisterLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
-import HeroImage from "@/public/hero.png";
+import HeroImage from "@/public/heroo.png";
 
 export function Hero() {
   return (
@@ -15,10 +15,12 @@ export function Hero() {
       <div className="relative flex flex-col w-full py-5 mx-auto md:flex-row md:items-center md:justify-between">
         <div className="flex flex-row items-center justify-between text-sm lg:justify-start">
           <Link href="/" className="flex items-center gap-2">
+          <div className="border-4 border-white">
             <Image src={Logo} className="size-10" alt="Logo" />
+            </div>
 
             <h4 className="text-3xl font-semibold">
-              Blog<span className="text-primary">Marshal</span>
+              Blog<span className=" text-slate-400">Flow</span>
             </h4>
           </Link>
           <div className="md:hidden">
