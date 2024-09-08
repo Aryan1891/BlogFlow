@@ -5,12 +5,43 @@ import { parseWithZod } from "@conform-to/zod";
 import { PostSchema, SiteCreationSchema } from "./utils/zodSchemas";
 import prisma from "./utils/db";
 import { requireUser } from "./utils/requireUser";
+import { stripe } from "./utils/stripe";
+import { create } from "domain";
 
 export async function CreateSiteAction(prevState:any, formData:FormData) {
    
     const user = await requireUser();
-    const submission=await parseWithZod(formData,{
-        
+    const [subStatus, sites]=await Promise.all([
+      prisma.subscription.findUnique({
+        where:{
+          userId:user.id,
+        },
+        select:{
+          status:true,
+        }
+      }),
+      prisma.site.findMany({
+        where:{
+          userId:user.id,  
+        }
+      })
+    ]);
+
+    if(!subStatus || subStatus?.status!=="active" ){
+      if(sites.length<1){
+       await createSite();
+      }else{
+        return redirect("/dashboard/pricing");
+      }
+
+    }else if(subStatus?.status==="active"){
+      await createSite();
+    }
+
+  async function createSite(){
+
+      const submission=await parseWithZod(formData,{
+            
         schema: SiteCreationSchema({
           async isSubdirectoryUnique(){
             const existingSubDirectory= await prisma.site.findUnique({
@@ -40,7 +71,9 @@ export async function CreateSiteAction(prevState:any, formData:FormData) {
 
         }
     })
-    return redirect("/dashboard/sites");
+  }
+  return redirect("/dashboard/sites");
+
 }
 
 export async function CreatePostAction(prevState:any, formData:FormData) {
@@ -139,3 +172,55 @@ export async function DeleteSite(formData: FormData) {
 
   return redirect("/dashboard/sites");
 }
+
+export async function CreateSubscription(){
+  const user = await requireUser();
+   let stripeUserId = await prisma.user.findUnique({
+    where:{
+      id:user.id,
+
+    },
+    select:{
+      customerId:true,
+      email:true,
+      firstName:true,
+    },
+
+   });
+   if(!stripeUserId?.customerId){
+    const stripeCustomer = await stripe.customers.create({
+      email: stripeUserId?.email,
+      name: stripeUserId?.firstName,
+    }); 
+    stripeUserId = await prisma.user.update({
+      where:{
+        id:user.id,
+      },
+      data:{
+        customerId:stripeCustomer.id,
+      },
+    });
+   }
+
+   const session = await stripe.checkout.sessions.create({
+    customer: stripeUserId.customerId as string,
+    mode:"subscription", 
+    billing_address_collection:"auto",
+    payment_method_types:["card"],
+    customer_update:{
+      address:"auto",
+      name:"auto",
+    },
+    success_url:"http://localhost:3000/dashboard/payment/success",
+    cancel_url:"http://localhost:3000/dashboard/payment/cancelled",
+    line_items:[
+      {
+        price:process.env.STRIPE_PRICE_ID,
+        quantity:1,
+      },
+    ],
+   })
+  return redirect(session.url as string);
+}
+
+ 
