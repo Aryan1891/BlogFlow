@@ -27,7 +27,7 @@ export async function GET() {
       },
     });
 
-    return NextResponse.redirect("http://localhost:3000/dashboard");
+    return NextResponse.redirect(process.env.NODE_ENV==="production"?"https://blog-flow-aryan.vercel.app/dashboard":"http://localhost:3000/dashboard");
   } catch (error) {
     console.error(error);
     return new NextResponse("An error occurred during user creation.", { status: 500 });

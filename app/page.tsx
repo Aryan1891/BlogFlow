@@ -1,9 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  RegisterLink,
-  LoginLink,
-  LogoutLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Hero } from "./components/frontend/Hero";
 import { Logos } from "./components/frontend/Logos";
