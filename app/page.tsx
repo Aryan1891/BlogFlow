@@ -4,6 +4,7 @@ import { Logos } from "./components/frontend/Logos";
 import { Features } from "./components/frontend/Features";
 import { PricingTable } from "./components/shared/Pricing";
 import { redirect } from "next/navigation";
+import Footer from "./components/frontend/Footer";
 
 export default async function Home() {
   const { getUser } = getKindeServerSession();
@@ -20,6 +21,7 @@ export default async function Home() {
       <Logos />
       <Features />
       <PricingTable />
+      <Footer />
     </div>
   );
 }
