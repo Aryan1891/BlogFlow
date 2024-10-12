@@ -37,7 +37,17 @@
 
 ## 🤸 Quick Start
 
-Follow these steps to set up the project locally on your machine.
+## ENV variable example =>
+NEXT_PUBLIC_KINDE_PUBLISHABLE_KEY=
+KINDE_SECRET_KEY=
+NEXT_PUBLIC_KINDE_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_KINDE_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_STRIPE_API_KEY=
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_SUPABASE_URL=
+SUPABASE_ANON_KEY=
+
+
 
 ### Cloning the Repository
 
