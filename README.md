@@ -1,7 +1,5 @@
 ## 🤖 Introduction
 
-Hey everyone, what's up 👋🏻
-
 **BlogFlow** is a multi-tenant blogging SaaS application built using the best technologies available today. This full-stack application covers everything from user authentication to secure payments and file uploads. BlogFlow allows users to create their personal blogs, manage content, and handle payments seamlessly.
 
 ## ⚙️ Tech Stack
